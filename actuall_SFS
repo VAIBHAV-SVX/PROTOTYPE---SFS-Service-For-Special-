@@ -1,0 +1,36 @@
+import pandas as pd
+import numpy as np
+import matplotlib.pyplot as plt
+data = pd.read_csv(r"C:\Users\vaibh\all_services_dataset_with_location.csv")
+df = pd.DataFrame(data)
+df.head()
+df = df.astype(str)
+for i in df:
+    df[i] = df[i].str.lower()
+df.head()
+df["Latitude"] = df["Latitude"].astype(float)
+df["Longitude"] = df["Longitude"].astype(float)
+df.head()
+Service_need = input("Enter the service you want")
+Budget = input("Enter your budget")
+import json
+from urllib.request import urlopen
+url = 'http://ipinfo.io/json'
+response = urlopen(url)
+data = json.load(response)
+lat,lon = map(float,(data["loc"]).split(","))
+
+found_service = df[df["service_name"] == Service_need]
+if found_service.empty:
+    print("your desired service is not available")
+else:
+    lats = float(found_service["Latitude"])
+    lons = float(found_service["Longitude"])
+from geopy.distance import geodesic
+loc1 = (lat, lon)
+
+loc2 = (lats,lons)
+
+distance_km = geodesic(loc1, loc2).kilometers
+
+print(f"Distance: {distance_km:.2f} km")
