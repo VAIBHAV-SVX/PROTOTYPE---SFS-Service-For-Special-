@@ -30,7 +30,6 @@ from geopy.distance import geodesic
 loc1 = (lat, lon)
 
 loc2 = (lats,lons)
-
 distance_km = geodesic(loc1, loc2).kilometers
-
 print(f"Distance: {distance_km:.2f} km")
+
